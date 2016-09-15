@@ -1,0 +1,132 @@
+<App>
+  <JavaScript File="node_modules/forerunnerdb/js/dist/fdb-all.min.js" />
+  <JavaScript File="main.min.js" />
+  <Font File="fonts/dripicons.ttf" ux:Global="Icons" />
+  
+  <ClientPanel>
+    
+    <DockPanel >
+    
+      <Panel Height="56" Background="#34C7FF" Name="topPanel" Alignment="Top" Dock="Top" >
+        <LayoutAnimation>
+            <Resize RelativeTo="SizeChange" X="1" Y="1" Duration="0.2" Easing="CircularInOut"  />
+        </LayoutAnimation>    
+          
+        <StackPanel Alignment="TopCenter" Margin="0,18,0,0" >
+          <Text Value="LIST" Color="#fff" />
+        </StackPanel>
+             
+        <WhileTrue Value="{textInputNotEmpty}">
+          <Panel Alignment="TopRight" Margin="0,15,16,0" Width="25" Height="25" HitTestMode="LocalBoundsAndChildren" Name="addConfirm" Clicked="{addTask}" Layer="Overlay" >
+            <Text Value="&#xe020;" Font="Icons" TextColor="#ffffff" Alignment="Center" FontSize="25" />
+            <Clicked>
+              <Toggle Target="buttonPressed"   />
+              <Toggle Target="inputField" />
+            </Clicked>      
+            <AddingAnimation>
+              <Change addConfirm.Opacity="0" Duration=".5" Easing="CircularInOut" />
+            </AddingAnimation>    
+            <RemovingAnimation>
+              <Change addConfirm.Opacity="0" Duration=".2" Easing="CircularInOut" />
+            </RemovingAnimation>
+          </Panel>    
+        </WhileTrue>  
+        
+        <WhileTrue Name="inputField" Value="false" >  
+          <Panel Alignment="TopLeft" Margin="16,30,16,20" Height="80" Width="100%" MinHeight="10" Layer="Overlay" Name="addNewPanel" Opacity="1" >
+            <Text Value="What should I do today?" TextColor="#fff" FontSize="12" Alignment="CenterLeft" Margin="0,-10,0,0" />
+            <TextInput Value="{textInput}" TextColor="#fff" Alignment="CenterLeft" Margin="0,50,0,0" Width="100%" PlaceholderText="Be awesome" PlaceholderColor="#ffffff" ValueChanged="{valueChanged}" />
+            <Rectangle Width="100%" Height="1" Color="#fff" Margin="0,80,0,0" Alignment="CenterLeft" />   
+            <RemovingAnimation>
+              <Change addNewPanel.Opacity="0" Duration=".2" />
+            </RemovingAnimation>       
+            <AddingAnimation>
+              <Change addNewPanel.Opacity="0" Duration=".2" />
+            </AddingAnimation>       
+          </Panel>                
+        </WhileTrue>       
+      </Panel>    
+      <WhileTrue Value="{noTasks}">
+        <StackPanel Alignment="Center" Layer="Background" Name="noTasksBackground" >
+          <Text Value="Yay! No tasks!   " Alignment="Center" FontSize="20" Margin="0,0,0,30" />
+          <Image File="images/bg.png" Alignment="Center" Width="120" />
+          <RemovingAnimation>
+            <Change noTasksBackground.Opacity="0" Duration=".2" />
+          </RemovingAnimation>       
+          <AddingAnimation>
+            <Change noTasksBackground.Opacity="0" Duration=".2" />
+          </AddingAnimation>               
+        </StackPanel>
+      </WhileTrue>
+      <ScrollView>
+        <StackPanel Name="tasks"  >
+          <Each Items="{result}"  >
+            <PageControl Clicked="{setToDone}" HitTestMode="LocalBoundsAndChildren" Name="task" >
+              <Page Height="72" Width="100%" >
+                <StackPanel Orientation="Horizontal" Margin="19,0,16,0" HitTestMode="LocalBoundsAndChildren"> 
+                  <Match Value="{done}">
+                      <Case Bool="false" >
+                         <Rectangle Color="#000" Width="10" Height="10" Opacity="0.1" CornerRadius="100" />  
+                      </Case>
+                      <Case Bool="true" >
+                         <Rectangle Color="#55D4C1" Width="10" Height="10" CornerRadius="100" />  
+                         <WhileActive>
+                            <Change textRectangle.Opacity=".7" Duration=".5" Easing="CircularInOut" />
+                         </WhileActive>
+                      </Case>
+                  </Match>          
+                  <Text Value="{title}" Color="#000" Opacity="0.6" Alignment="CenterLeft" Margin="16,0,0,0" >
+                    <Rectangle Height="1" Color="#000" Opacity="0" Name="textRectangle" />
+                  </Text>           
+                </StackPanel>
+                <Rectangle Width="100%" Background="#000" Height="1" Opacity="0.05" Alignment="BottomCenter" />                  
+              </Page>  
+              
+              <Page Height="72" Name="delete" HitTestMode="LocalBoundsAndChildren" Width="100%" >
+                <StackPanel Orientation="Horizontal" Margin="19,0,16,0" HitTestMode="LocalBoundsAndChildren">      
+                  <Text Value="Delete" Name="deleteText" Color="#fff" Opacity=".5" Alignment="CenterLeft" Margin="16,0,0,0" />           
+                </StackPanel>  
+                <ActivatingAnimation>
+									<Change deleteText.Opacity="1" />
+									<Change delete.Color="#E74C3C" Easing="ExponentialOut" />
+								</ActivatingAnimation>
+                <WhileActive>
+                  <Callback Handler="{remove}" />
+                </WhileActive>                                       
+              </Page>    
+              <AddingAnimation>
+                <Change task.Opacity="0" Duration=".4" />
+              </AddingAnimation>
+              <RemovingAnimation>
+                <Move RelativeTo="Size" X="-1" Duration="0.2" Easing="CircularOut" />
+              </RemovingAnimation>        
+              <LayoutAnimation>
+                  <Move RelativeTo="LayoutChange" Y="1" Duration="0.4" Easing="CircularInOut" />
+              </LayoutAnimation>      
+            </PageControl>         
+          </Each>             
+        </StackPanel>   
+        <LayoutAnimation>
+            <Move RelativeTo="LayoutChange" Y="1" Duration="0.2" Easing="CircularInOut" />
+        </LayoutAnimation>     
+      </ScrollView>   
+  
+      <Panel Margin="0,0,16,16" Width="50" Height="50" HitTestMode="LocalBoundsAndChildren" Name="addButton" Dock="Bottom" Alignment="BottomRight" Layer="Overlay"  >
+        <Text Value="&#xe065;" Font="Icons" TextColor="#ffffff" Alignment="Center" FontSize="30" />
+        <Clicked>
+          <Toggle Target="buttonPressed" />
+          <Toggle Target="inputField" />
+        </Clicked>
+        <Rectangle Layer="Background" Color="#34C7FF" Width="50" Height="50" CornerRadius="100" /> 
+      </Panel> 
+  
+    </DockPanel>  
+
+  </ClientPanel>
+  
+  <WhileTrue Value="false" Name="buttonPressed" >
+    <Rotate Degrees="-45" Target="addButton" Duration="0.2" Easing="CircularInOut" />
+    <Change topPanel.Height="130" />
+  </WhileTrue>
+  
+</App>

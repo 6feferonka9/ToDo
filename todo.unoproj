@@ -1,0 +1,32 @@
+{
+  "RootNamespace":"",
+  "Packages": [
+  	"Fuse",
+  	"FuseJS"
+  ],
+  "Includes": [
+    "*",
+    "*.ux",
+    "images/*.png",
+    "**.js:Bundle"
+  ],
+  "Version": "0.1",
+  "Title": "To-Do List",
+  "Description": "IDK so far",
+  "Publisher": "Martin Mali",
+  "Copyright": "Copyright © 2016 $(Publisher)",
+  "Mobile": {
+    "RunsInBackground": false,
+    "Orientations": "Portrait"
+  },
+  "Android": {
+		"Icons": {
+			"LDPI": "icons/mipmap-ldpi/ic_launcher.png",
+			"MDPI": "icons/mipmap-mdpi/ic_launcher.png",
+			"HDPI": "icons/mipmap-hdpi/ic_launcher.png",
+			"XHDPI": "icons/mipmap-xhdpi/ic_launcher.png",
+			"XXHDPI": "icons/mipmap-xxhdpi/ic_launcher.png",
+			"XXXHDPI": "icons/mipmap-xxxhdpi/ic_launcher.png"
+		},
+  }
+}
